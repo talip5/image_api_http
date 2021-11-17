@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -22,7 +23,7 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
 
   List<Map<String,dynamic>> listMap=[];
-
+  List<String> denemejson=[];
   List? data;
   List imagesUrl = [];
 
@@ -125,12 +126,54 @@ class _MyAppState extends State<MyApp> {
     file.writeAsBytesSync(response.bodyBytes);
   }
 
+ /* List list=response.data as List;
+  print(list.length);
+  //print(list.elementAt(0));
+  for(int i=0; i<list.length; i++){
+  (list.elementAt(i) as Map).forEach((key, value) {
+  print('$key   $value');
+  });}*/
+
+  json35() async{
+    final response = await http.get(Uri.parse('https://jsonplaceholder.typicode.com/todos/1'));
+    (response.body as Map<String,dynamic>).forEach((key, value) {
+      print(key);
+    });
+  }
+
+  json15() async{
+    //final response = await http.get(Uri.parse('https://jsonplaceholder.typicode.com/todos/1'));
+    final response = await http.get(Uri.parse('https://jsonplaceholder.typicode.com/users'));
+    String response_json=response.body;
+    var decoded = json.decode(response_json);
+    Map<String,dynamic> map;
+    map=decoded;
+    print(decoded);
+    map.forEach((key, value) {
+      print(key);
+    });
+  }
+
+  json5() async{
+    final response = await http.get(Uri.parse('https://jsonplaceholder.typicode.com/users'));
+   String response_json=response.body;
+    var decoded = json.decode(response_json);
+    List<dynamic> list=decoded;
+    print(list.length);
+    //print(list[0]);
+    for(int i=0;i<10;i++) {
+      Map<String,dynamic> map=list[i];
+    map.forEach((key, value) {
+        print('$key : $value');
+      });
+    }
+  }
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    denemejpg();
+    json5();
   }
 
   @override
@@ -151,4 +194,19 @@ class _MyAppState extends State<MyApp> {
       ),
     );
   }
+}
+class User {
+  final String name;
+  final String email;
+
+  User(this.name, this.email);
+
+  User.fromJson(Map<String, dynamic> json)
+      : name = json['name'],
+        email = json['email'];
+
+  Map<String, dynamic> toJson() => {
+    'name': name,
+    'email': email,
+  };
 }
