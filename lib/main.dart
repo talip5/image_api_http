@@ -158,6 +158,7 @@ class _MyAppState extends State<MyApp> {
     final response = await http.get(Uri.parse('https://jsonplaceholder.typicode.com/users'));
    String response_json=response.body;
     var decoded = json.decode(response_json);
+    print(decoded.runtimeType);
     List<dynamic> list=decoded;
     print(list.length);
     //print(list[0]);
